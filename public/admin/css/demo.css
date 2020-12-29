@@ -1,0 +1,10 @@
+a.btn-dual {
+    color: #fff !important;
+    text-decoration: none;
+    padding:6px 15px;
+}
+a.btn-dual:hover{
+    color:#fff;
+    background-color:#1572e8;
+    border-radius: 3px;
+}
