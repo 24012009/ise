@@ -18,50 +18,36 @@
     <meta name="twitter:image:alt" content="{{$seo->og_title}}">
     <meta name="robots" content="index, follow">
 @endsection
-@section("header-promotion")
-    @if($promotion->count()>0)
-        <div class="container-fluid bg-lochmara">
-            Special offers and promotion! Save up to 30%* off on Entrepreneurship & Small Business certification voucher
-            with a retake
-        </div>
+@section('header-promotion')
+    @if($promotion->isNotEmpty())
+        @include('layouts.template.promotion', ['promotions' => $promotion])
     @endif
 @endsection
 @section("slide")
-    <div id="main-slide" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            @foreach($slider as $i=>$rows)
-                <div class="carousel-item {{($i==0)?"active":""}}" style="background-image: url({{asset($rows->images)}});">
-                    <img src="{{asset($rows->images)}}" class="d-block w-100" alt="{{$rows->slide_title}}">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h1>{{$rows->slide_title}}</h1>
-                        <p>
-                            {!! $rows->details !!}
-                        </p>
+    <header>
+        @if($slider)
+            @component('layouts.template.slide',['promotions' => $promotion])
+                @if($promotion->isNotEmpty())
+                    <div class="swiper-slide">
+                        <img src="{{$promotion->first()->banner}}" alt="{{$promotion->first()->promotion_title}}" width="100%">
                     </div>
-                </div>
-            @endforeach
-        </div>
-        <a class="carousel-control-prev" href="#main-slide" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#main-slide" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
+                @endif
+                @foreach($slider as $index => $slide)
+                    <div class="swiper-slide">
+                        <img src="{{$slide->images}}" alt="{{$slide->slider_name}}" width="100%">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1>{{$slide->slide_title}}</h1>
+                            <p>
+                                {!! $slide->details !!}
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            @endcomponent
+        @endif
+    </header>
 @endsection
 @section("content")
-    <div class="container position-relative bg-emerald set-height-80 set-z-index-top set-border-radius-82 clear-border-radius-xs-0 cpadding">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <i class="bi bi-info-circle"></i>
-                The current event, COVID-19 have impacted schools. I
-                Inovation School of Education have decided to convert all in-person classes to live-online
-                classes.For more information, <a href="#">click here</a>.
-            </div>
-        </div>
-    </div>
     @if(isset($sections))
         @foreach ($sections as $index => $rows)
             @include($rows->templateSection->backend_view,[$rows])
