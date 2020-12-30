@@ -95,7 +95,7 @@
                             <div class="dropdown-user-scroll scrollbar-outer">
                                 <li>
                                     <div class="user-box">
-                                        <div class="avatar-lg"><img src="{{asset("assets/img/favicon.png")}}" alt="image profile" class="avatar-img rounded-circle"></div>
+                                        <div class="avatar-lg"><img src="{{asset("uploads/images/favicon.png")}}" alt="image profile" class="avatar-img rounded-circle"></div>
                                         <div class="u-text">
                                             <h4>{{Auth::user()->name}}</h4>
                                             <p class="text-muted">{{Auth::user()->email}}</p>
@@ -127,8 +127,8 @@
             <div class="sidebar-content">
                 <div class="user">
                     <div class="avatar-sm float-left mr-2 avatar-xs">
-                        <img src="{{asset("uploads/images/favicon.png")}}" alt="navbar brand" class="avatar-img rounded-circle">
-                        </div>
+                        <img src="{{URL::to("uploads/images/favicon.png")}}" alt="navbar brand" class="avatar-img rounded-circle">
+                    </div>
                     <div class="info">
                         <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                             <span>
@@ -302,6 +302,77 @@
 
 <!-- Atlantis JS -->
 <script src="{{asset("admin/js/atlantis.min.js")}}"></script>
+<script src="//cdn.jsdelivr.net/npm/nestable2@1.6.0/jquery.nestable.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target), output = list.data('output');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{url("/administrator/section/sortlist")}}",
+                method: "POST",
+                data: {
+                    list: list.nestable('serialize')
+                },
+                success: function (data) {
+                    msg(data);
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown){
+                alert("Unable to save new list order: " + errorThrown);
+            });
+        };
+        $('#nestable3').nestable({
+            maxDepth: 1
+        }).on('change', updateOutput);
+        $(".btn-section-delete").on("click",function(){
+            elem=$(this).parent().parent().parent().parent().parent();
+            id=$(this).attr("data-id");
+            url="/administrator/section/"+id+"/delete";
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this data!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url:url,
+                            type:'delete',
+                            success:function(){
+                                swal("testing", {
+                                    icon: "success",
+                                });
+                                elem.remove();
+                            }
+                        });
+                    }
+                });
+        });
+    });
+    function msg(data){
+        $.notify({
+            icon: 'flaticon-alarm-1',
+            title:data.title,
+            message: data.message,
+        },{
+            type: 'info',
+            placement: {
+                from: "bottom",
+                align: "right"
+            },
+            time: 1000,
+        });
+    }
+</script>
 @yield("script")
 </body>
 </html>

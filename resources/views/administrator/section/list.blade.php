@@ -20,7 +20,6 @@
         <div class="col-md-12">
             <div class="dd" id="nestable3">
                 <ol class="dd-list">
-{{--                    {{dd($section->)}}--}}
                     @foreach($section as $rows)
                         <li class="dd-item" data-id="{{$rows->section_id}}">
                             <div class="card no-box-shadow rounded-0">

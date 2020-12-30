@@ -1,5 +1,6 @@
 @php
     if(isset($id)){
+        //dd($section->columns);
         $rows=$section->columns->first();
         $colName=$rows->col_name;
         $colTitle=$rows->title_col;
@@ -42,36 +43,36 @@
                     </div>
                 @endif
                 <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6">
+                    @foreach($section->columns as $i=>$rows)
+                    <div class="col-xs-{{($i==0)?'4':'8'}} col-sm-{{($i==0)?'4':'8'}} col-md-{{($i==0)?'4':'8'}}">
                         <div class="row">
-                            <div class="form-group col-md-6 d-none">
+                            <div class="form-group col-md-6 {{($i==0)?' d-none':null}}">
                                 <label>Column name</label>
-                                {!! Form::text('col_name[]', $colName, array('class' =>'form-control')) !!}
+                                {!! Form::text('col_name[]', $rows->col_name, array('class' =>'form-control')) !!}
                             </div>
-                            <div class="form-group col-md-6 d-none">
+                            <div class="form-group col-md-6 {{($i==0)?' d-none':null}}">
                                 <label>Column Title</label>
-                                {!! Form::text('title_col[]', $colTitle, array('class' => 'form-control')) !!}
+                                {!! Form::text('title_col[]', $rows->title_col, array('class' => 'form-control')) !!}
                             </div>
                             <div class="form-group col-md-6 d-none">
                                 <label>Label name</label>
-                                {!! Form::text('labels_link[]', $labels_link, array('class' =>'form-control')) !!}
+                                {!! Form::text('labels_link[]', $rows->labels_link, array('class' =>'form-control')) !!}
                             </div>
                             <div class="form-group col-md-6 d-none">
                                 <label>Link URL</label>
-                                {!! Form::text('link[]', $link, array('placeholder' => 'http://domainname.com','class' => 'form-control')) !!}
+                                {!! Form::text('link[]', $rows->link, array('placeholder' => 'http://domainname.com','class' => 'form-control')) !!}
                             </div>
-                            <div class="form-group col-md-12">
-                                <img
-                                    class="img-thumb-col2-preview img-fluid"
+                            <div class="form-group col-md-12 {{($i==1)?' d-none':null}}">
+                                <img class="img-thumb-col2-preview img-fluid"
                                     src="{{($thumbnail!="")?asset($thumbnail):'https://via.placeholder.com/435x275.png'}}"
                                     alt="preview">
                             </div>
-                            <div class="form-group col-md-12">
-                                <label for="basic-url">Logo <small>Sage</small></label>
+                            <div class="form-group col-md-12 {{($i==1)?' d-none':null}}">
+                                <label for="basic-url">Thumbnail</label>
                                 <div class="input-group mb-3">
-                                    <input type="text" name="file_upload[]" value="{{$thumbnail}}" class="form-control" id="thumb-col2" aria-describedby="basic-addon3">
+                                    <input type="text" name="file_upload[]" value="{{$rows->thumbnail}}" class="form-control" id="thumb-col{$i}" aria-describedby="basic-addon3">
                                     <div class="input-group-prepend">
-                                        <button type="button" class="input-group-text btn-thumb-col2" id="btn-thumb-col2">Browse</button>
+                                        <button type="button" class="input-group-text btn-thumb-col{$i}" id="btn-thumb-col{$i}">Browse</button>
                                     </div>
                                 </div>
                             </div>
@@ -79,53 +80,12 @@
                                 <label>Label</label>
                                 {!! Form::text('label[]', $labels, array('placeholder' => 'labels','class' =>'form-control')) !!}
                             </div>
-                            <div class="form-group col-md-12 d-none">
-                                {!! Form::textarea('articlebody[]', $container, ['class' => 'form-control basictools','id'=>'col01', 'rows' =>5]) !!}
+                            <div class="form-group col-md-12 {{($i==0)?' d-none':null}}">
+                                {!! Form::textarea('articlebody[]', $rows->container, ['class' => 'form-control basictools','id'=>"col{$i}", 'rows' =>5]) !!}
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6">
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label>Column name</label>
-                                {!! Form::text('col_name[]', $colName, array('class' =>'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Column Title</label>
-                                {!! Form::text('title_col[]', $colTitle, array('class' => 'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-6 d-none">
-                                <label>Label name</label>
-                                {!! Form::text('labels_link[]', $labels_link, array('class' =>'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-6 d-none">
-                                <label>Link URL</label>
-                                {!! Form::text('link[]', $link, array('placeholder' => 'http://domainname.com','class' => 'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-4 d-none">
-                                <img
-                                    class="img-thumb-col2-preview img-fluid"
-                                    src="{{($thumbnail!="")?asset($thumbnail):'https://via.placeholder.com/235x94.png'}}"
-                                    alt="preview">
-                            </div>
-                            <div class="form-group col-md-8 d-none">
-                                <label for="basic-url">Logo <small>Sage</small></label>
-                                <div class="input-group mb-3">
-                                    <input type="text" name="file_upload[]" value="{{$thumbnail}}" class="form-control" id="thumb-col2" aria-describedby="basic-addon3">
-                                    <div class="input-group-prepend">
-                                        <button type="button" class="input-group-text btn-thumb-col2" id="btn-thumb-col2">Browse</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-12 d-none">
-                                <label>Label</label>
-                                {!! Form::text('label[]', $labels, array('placeholder' => 'labels','class' =>'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-12">
-                                {!! Form::textarea('articlebody[]', $container, ['class' => 'form-control basictools','id'=>'col02', 'rows' =>10]) !!}
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div class="card-footer text-muted">

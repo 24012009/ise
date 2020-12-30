@@ -1,6 +1,8 @@
 @php
     if(isset($id)){
+        //dd($section->columns);
         $rows=$section->columns->first();
+        // dd($rows);
         $colName=$rows->col_name;
         $colTitle=$rows->title_col;
         $thumbnail=$rows->thumbnail;
@@ -9,7 +11,7 @@
         $labels=$rows->labels;
         $class=$rows->class;
         $container=$rows->container;
-        $events=$id;
+        $events=$rows->col_id;
         $method="PUT";
     }
     else{
@@ -43,48 +45,6 @@
                     </div>
                 @endif
                 <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 d-none">
-                        <div class="row">
-                            <div class="form-group col-md-6 d-none">
-                                <label>Column name</label>
-                                {!! Form::text('col_name[]', $colName, array('class' =>'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-6 d-none">
-                                <label>Column Title</label>
-                                {!! Form::text('title_col[]', $colTitle, array('class' => 'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-6 d-none">
-                                <label>Label name</label>
-                                {!! Form::text('labels_link[]', $labels_link, array('class' =>'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-6 d-none">
-                                <label>Link URL</label>
-                                {!! Form::text('link[]', $link, array('placeholder' => 'http://domainname.com','class' => 'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-12">
-                                <img
-                                    class="img-thumb-col2-preview img-fluid"
-                                    src="{{($thumbnail!="")?asset($thumbnail):'https://via.placeholder.com/435x275.png'}}"
-                                    alt="preview">
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label for="basic-url">Background Image</label>
-                                <div class="input-group mb-3">
-                                    <input type="text" name="file_upload[]" value="{{$thumbnail}}" class="form-control" id="thumb-col2" aria-describedby="basic-addon3">
-                                    <div class="input-group-prepend">
-                                        <button type="button" class="input-group-text btn-thumb-col2" id="btn-thumb-col2">Browse</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-12 d-none">
-                                <label>Label</label>
-                                {!! Form::text('label[]', $labels, array('placeholder' => 'labels','class' =>'form-control')) !!}
-                            </div>
-                            <div class="form-group col-md-12 d-none">
-                                {!! Form::textarea('articlebody[]', $container, ['class' => 'form-control basictools','id'=>'col01', 'rows' =>5]) !!}
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-xs-12 col-sm-6 col-md-12">
                         <div class="row">
                             <div class="form-group col-md-6">

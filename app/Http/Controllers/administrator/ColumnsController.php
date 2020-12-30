@@ -95,12 +95,14 @@ class ColumnsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $col_id)
     {
+
         //
         $sections=Sections::find($id);
-        $cols=Columns::where("section_id",$id)->where("is_active",1)->get();
-        //dd($sections,$cols);
+        $cols=Columns::where("section_id",$id)
+        ->where("is_active",1)
+        ->get();
         $img=array();
         foreach($cols as $i=>$rows){
             $col_id=$rows->col_id;
@@ -116,9 +118,9 @@ class ColumnsController extends Controller
                 "custom_field" => isset($request->custom_field[$i]) ? $request->custom_field[$i] : '',
             );
 			
-            $columns=Columns::find($col_id);
-			//dd($data);
-            $columns->where('col_id',$col_id)->update($data);
+           // $columns=Columns::where("col_id",$col_id);
+			// dd($data);
+            Columns::where('col_id',$col_id)->update($data);
         }
         return redirect("/administrator/pages/{$sections->page_id}/section/list/")->with('success', 'Columns update successfully');
     }
